@@ -1,9 +1,7 @@
-def main():
+def cargar_problema(archivo):
     incompatibilidades = {}
     tiempo_lavado = {}
-    nro_lavado = 1
-    lavados = {}
-    with open('problema.txt') as f:
+    with open(archivo) as f:
         line = f.readline()
         while line:
             linea = line.split()
@@ -19,24 +17,50 @@ def main():
                 if(linea[0] == 'n'):
                     tiempo_lavado[linea[1]] = linea[2]
             line = f.readline()
+    return (cant_prendas, cant_incompatibilidades, incompatibilidades, tiempo_lavado)
+
+
+def nuevo_lavado(nro_lavado, lavados, prenda):
+    nro_lavado = len(lavados.keys()) + 1
+    lavados[nro_lavado] = [prenda]
+
+
+def verificar_si_es_compatible(prenda, nro_lavado, lavados, incompatibilidades):
+    prendas_incompatibles = incompatibilidades.get(prenda)
+    if (prendas_incompatibles):
+        for prenda_en_lavado in lavados.get(nro_lavado):
+            if prenda_en_lavado in prendas_incompatibles:
+                return False
+        return True
+    else:
+        return True
+
+
+def agregar_prenda_en_lavado(nro_lavado, prenda, lavados):
+    lavados[nro_lavado].append(prenda)
+
+
+def main():
+    (cant_prendas, cant_incompatibilidades, incompatibilidades,
+     tiempo_lavado) = cargar_problema("problema.txt")
+    nro_lavado = 1
+    lavados = {}
     for prenda in range(1, int(cant_prendas)+1):
         nro_lavado = 1
+        prenda_agregada = False
         if(nro_lavado in lavados.keys()):
-            prenda_agregada = False
-            prendas_incompatibles = incompatibilidades.get(prenda)
-            if (prendas_incompatibles):
-                for prenda_en_lavado in lavados.get(nro_lavado):
-                    if prenda_en_lavado in prendas_incompatibles:
-                        nro_lavado = len(lavados.keys()) + 1
-                        lavados[nro_lavado] = [prenda]
-                        prenda_agregada = True
-                        break
-                if(prenda_agregada == False):
-                    lavados[nro_lavado].append([prenda])
-            else:
-                lavados[nro_lavado].append([prenda])
+            while(nro_lavado < len(lavados.keys())+1 and prenda_agregada == False):
+                es_compatible = verificar_si_es_compatible(
+                    prenda, nro_lavado, lavados, incompatibilidades)
+                if (es_compatible):
+                    agregar_prenda_en_lavado(nro_lavado, prenda, lavados)
+                    prenda_agregada = True
+                else:
+                    nro_lavado += 1
+            if(prenda_agregada == False):
+                nuevo_lavado(nro_lavado, lavados, prenda)
         else:
-            lavados[nro_lavado] = [prenda]
+            nuevo_lavado(nro_lavado, lavados, prenda)
 
     print(lavados)
 
