@@ -14,6 +14,11 @@ def cargar_problema(archivo):
                         incompatibilidades[int(linea[1])].append(int(linea[2]))
                     else:
                         incompatibilidades[int(linea[1])] = [int(linea[2])]
+                    if(int(linea[2]) in incompatibilidades.keys()):
+                        incompatibilidades[int(linea[2])].append(int(linea[1]))
+                    else:
+                        incompatibilidades[int(linea[2])] = [int(linea[1])]
+
                 if(linea[0] == 'n'):
                     tiempo_lavado[linea[1]] = linea[2]
             line = f.readline()
@@ -40,6 +45,16 @@ def agregar_prenda_en_lavado(nro_lavado, prenda, lavados):
     lavados[nro_lavado].append(prenda)
 
 
+def imprimir_resultado(lavados):
+    resultado = {}
+    for k in lavados.keys():
+        prendas = lavados.get(k)
+        for prenda in prendas:
+            if not resultado.get(prenda):
+                resultado[prenda] = k
+    return resultado
+
+
 def main():
     (cant_prendas, cant_incompatibilidades, incompatibilidades,
      tiempo_lavado) = cargar_problema("problema.txt")
@@ -63,6 +78,10 @@ def main():
             nuevo_lavado(nro_lavado, lavados, prenda)
 
     print(lavados)
+    resultado = imprimir_resultado(lavados)
+    with open('resultado.txt', 'a') as f:
+        for x in resultado:
+            print(str(x) + ' ' + str(resultado.get(x)), file=f)
 
 
 main()
