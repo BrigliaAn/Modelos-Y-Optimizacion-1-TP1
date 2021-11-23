@@ -1,0 +1,8 @@
+Impresión inicial del problema y conclusiones:
+Primer problema
+El problema planteado parece poder resolverse de forma casi óptima haciendo un algoritmo que una vez identificadas las prendas incompatibles entre sí, se encargue de armar lavados con prendas que puedan mezclarse. En mi solución no consideré el tiempo de lavado en el algoritmo. Pude observar que no importa la prenda inicial a considerar para armar los lavados, siempre obtuve el mismo resultado.
+
+Segundo problema:
+En la resolución del primer problema se obtuvo un buen puntaje sin tener en cuenta el tiempo de los lavados, en esta instancia el algoritmo fue mejorado para que tenga en cuenta el tiempo que tarda cada prenda en lavarse y así armar los lavados de manera más eficiente. 
+Para mejorar el algoritmo utilizando el tiempo, primero agrupo las prendas según si sin compatibles o no, y luego dentro de los lavados armados de esta forma busco las prendas que tienen el mismo tiempo de lavado y armo los lavados teniendo en cuenta esto. Los lavados resultantes contienen pocas prendas ya que son pocas en las que coinciden el tiempo de lavado y su compatibilidad. Para el resto de las prendas que quedaron fuera por no coincidir en compatibilidad y tiempo, se busca el primer lavado donde sean compatibles sin importar el tiempo que lleve lavarse. Una posible mejora e esto seria considerar el tiempo mas cercano de lavado a cada una de las prendas y colocarla en ese lavado, no de forma aleatoria como realiza el algoritmo en este momento. 
+A diferencia del primer problema, al considerar el tiempo, no logré optimizar el problema
